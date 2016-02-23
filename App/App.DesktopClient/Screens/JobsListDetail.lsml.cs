@@ -13,8 +13,7 @@ namespace LightSwitchApplication
 {
     public partial class JobsListDetail
     {
-        private bool _isNewCompanyAdded;
-        private bool _isNewBranchAdded;
+      
 
         partial void JobsListDetail_Created()
         {
@@ -23,18 +22,64 @@ namespace LightSwitchApplication
 
             this.FindControl("Branch1").ControlAvailable += Branch1_ControlAvailable;
             this.FindControl("Contact1").ControlAvailable += Contact_ControlAvailable;
-
-            
-
+             
         }
 
-        #region MyRegion
+        #region Contact
         private void Contact_ControlAvailable(object sender, ControlAvailableEventArgs e)
         {
-            throw new NotImplementedException();
+            //get the control
+            var control = e.Control as System.Windows.Controls.Control;
+
+            //just this should not happen but for the sake good programming practice handle this
+            if (control == null) return;
+
+            //now on the lost focus of the control, do something
+            control.LostFocus -= Contact_LostFocus;
+            control.LostFocus += Contact_LostFocus;
         }
-        
+
+        private void Contact_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var contactName = ((System.Windows.Controls.AutoCompleteBox)sender).Text;
+            var branch = Jobs.SelectedItem.Branch;
+           
+            //just ignore if empty
+            if (string.IsNullOrEmpty(contactName) || branch == null)
+                return;
+
+
+            //do it inside the current screen dispatcher, so you can access the dataworkspace
+            this.Details.Dispatcher.BeginInvoke(() =>
+            {
+                //try to search the company if it exists, ignoring the case of the text (whether lower or upper case)
+
+                var contact = GetContact(contactName, branch.Id);
+
+                //if it cannot find that company then add it and assign it on the current selected job
+                if (contact == null)
+                {
+                    contact = this.DataWorkspace.ApplicationData.Contacts.AddNew();
+                    contact.Name = contactName;
+
+                    //set the current selected item company as it's company
+                    contact.Branch = branch;
+
+                 
+
+                    //update the cache too
+                    ContactCache.Add(contact);
+
+                    //just for the sake of good practice check first if the item is null
+                    if (this.Jobs.SelectedItem != null)
+                        this.Jobs.SelectedItem.Contact = contact;
+                }
+
+            });
+        }
+
         #endregion
+
         #region Branch Dropdown control
 
         private void Branch1_ControlAvailable(object sender, ControlAvailableEventArgs e)
@@ -75,8 +120,6 @@ namespace LightSwitchApplication
                     //set the current selected item company as it's company
                     branch.Company = company ;
 
-                    //update the flag that new company was added
-                    _isNewBranchAdded = true;
 
                     //update the cache too
                     BranchCache.Add(branch);
@@ -90,6 +133,7 @@ namespace LightSwitchApplication
         }
 
         #endregion
+
         #region Company dropdown control
 
         private void Company1_ControlAvailable(object sender, ControlAvailableEventArgs e)
@@ -128,8 +172,6 @@ namespace LightSwitchApplication
                     company = this.DataWorkspace.ApplicationData.Companies.AddNew();
                     company.Name = companyName;
 
-                    //update the flag that new company was added
-                    _isNewCompanyAdded = true;
 
                     //update the cache too
                     CompanyCache.Add(company);
@@ -224,6 +266,47 @@ namespace LightSwitchApplication
             }
         }
 
+
+        //local cache of branches to it wont always hit the server
+        private Contact GetContact(string name, int branchId)
+        {
+            //this consider the parent or the company because of cascade
+            //try to get first from the local cache 
+            var result = ContactCache
+                .FirstOrDefault(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) &&
+                                    m.Name != null && m.Branch.Id == branchId);
+
+            if (result == null)
+            {
+                //if it cannot find from the local then try to get from server
+                //this should be run on screen dispatcher
+                result = this.DataWorkspace.ApplicationData.Contacts.Where(
+                          m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) &&
+                              m.Branch != null && m.Branch.Id == branchId)
+                          .Execute()
+                          .FirstOrDefault();
+
+            }
+
+
+            return result;
+
+        }
+
+
+        private List<Contact> _contactCache;
+        private List<Contact> ContactCache
+        {
+            get
+            {
+                if (_contactCache == null)
+                {
+                    _contactCache = this.DataWorkspace.ApplicationData.Contacts.GetQuery().Execute().ToList();
+                }
+
+                return _contactCache;
+            }
+        }
         #endregion
 
 

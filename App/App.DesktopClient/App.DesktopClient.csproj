@@ -243,6 +243,8 @@
     <LightSwitchModel Include="Screens\EditableBranchesGrid.lsml" />
     <LightSwitchModel Include="Screens\EditableCompaniesGrid.lsml" />
     <LightSwitchModel Include="Screens\EditableContactsGrid.lsml" />
+    <LightSwitchModel Include="Screens\ListDetail.lsml" />
+    <LightSwitchModel Include="Screens\EditableCowsGrid.lsml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

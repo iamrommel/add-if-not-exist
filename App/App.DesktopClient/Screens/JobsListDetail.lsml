@@ -26,7 +26,7 @@
               Name="JobList"
               Kind="Collection"
               DataType="CollectionView$Job"
-              View="Microsoft.LightSwitch.RichClient:List">
+              View="Microsoft.LightSwitch.RichClient:DataGrid">
               <ContentItem.DataSource>
                 <ScreenExpressionTree>
                   <ChainExpression>
@@ -45,6 +45,19 @@
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
                 <ContentItem
+                  Name="Id"
+                  Kind="Value"
+                  DataType=":Int32">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression
+                          Member="Job/Properties[Id]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                </ContentItem>
+                <ContentItem
                   Name="Name"
                   Kind="Value"
                   DataType=":String">
@@ -58,122 +71,35 @@
                   </ContentItem.DataSource>
                 </ContentItem>
                 <ContentItem
-                  Name="Contact"
-                  Kind="Details"
-                  DataType="Contact">
+                  Name="Name2"
+                  Kind="Value"
+                  DataType=":String">
+                  <ContentItem.Attributes>
+                    <DisplayName
+                      Value="Contact Name" />
+                  </ContentItem.Attributes>
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression
                           Member="Job/Properties[Contact]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                  <ContentItem
-                    Name="RowTemplate1"
-                    Kind="Details"
-                    DataType="Contact">
-                    <ContentItem.DataSource>
-                      <ScreenExpressionTree>
-                        <ChainExpression />
-                      </ScreenExpressionTree>
-                    </ContentItem.DataSource>
-                  </ContentItem>
-                </ContentItem>
-                <ContentItem
-                  Name="Company"
-                  Kind="Details"
-                  DataType="Company">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
                         <MemberExpression
-                          Member="Job/Properties[Company]" />
+                          Member="Name" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
-                  <ContentItem
-                    Name="RowTemplate2"
-                    Kind="Details"
-                    DataType="Company">
-                    <ContentItem.DataSource>
-                      <ScreenExpressionTree>
-                        <ChainExpression />
-                      </ScreenExpressionTree>
-                    </ContentItem.DataSource>
-                  </ContentItem>
                 </ContentItem>
                 <ContentItem
-                  Name="Branch"
-                  Kind="Details"
-                  DataType="Branch">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression
-                          Member="Job/Properties[Branch]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                  <ContentItem
-                    Name="RowTemplate3"
-                    Kind="Details"
-                    DataType="Branch">
-                    <ContentItem.DataSource>
-                      <ScreenExpressionTree>
-                        <ChainExpression />
-                      </ScreenExpressionTree>
-                    </ContentItem.DataSource>
-                  </ContentItem>
-                </ContentItem>
-                <ContentItem
-                  Name="CreatedBy"
+                  Name="Phone"
                   Kind="Value"
-                  DataType=":Person?">
+                  DataType=":String">
                   <ContentItem.DataSource>
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression
-                          Member="Job/Properties[CreatedBy]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem
-                  Name="Created"
-                  Kind="Value"
-                  DataType=":DateTimeOffset?">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
+                          Member="Job/Properties[Contact]" />
                         <MemberExpression
-                          Member="Job/Properties[Created]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem
-                  Name="ModifiedBy"
-                  Kind="Value"
-                  DataType=":Person?">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression
-                          Member="Job/Properties[ModifiedBy]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem
-                  Name="Modified"
-                  Kind="Value"
-                  DataType=":DateTimeOffset?">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression
-                          Member="Job/Properties[Modified]" />
+                          Member="Phone" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
@@ -387,6 +313,36 @@
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
                 </ContentItem>
+              </ContentItem>
+              <ContentItem
+                Name="Phone1"
+                Kind="Value"
+                DataType=":String">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="Job/Properties[Contact]" />
+                      <MemberExpression
+                        Member="Phone" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem
+                Name="Email"
+                Kind="Value"
+                DataType=":String">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression
+                        Member="Job/Properties[Contact]" />
+                      <MemberExpression
+                        Member="Email" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
               </ContentItem>
               <ContentItem.PropertySources>
                 <ControlPropertySource

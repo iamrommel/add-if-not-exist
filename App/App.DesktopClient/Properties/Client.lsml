@@ -48,6 +48,12 @@
     <ApplicationCommand
       Name="ScreenCommandShowEditableContactsGrid"
       Target="!module/Methods[ShowEditableContactsGrid]" />
+    <ApplicationCommand
+      Name="ScreenCommandShowListDetail"
+      Target="!module/Methods[ShowListDetail]" />
+    <ApplicationCommand
+      Name="ScreenCommandShowEditableCowsGrid"
+      Target="!module/Methods[ShowEditableCowsGrid]" />
   </Application.Commands>
   <Application.NavigationItems>
     <ApplicationNavigationGroup
@@ -69,6 +75,12 @@
       <ApplicationNavigationLink
         Name="EditableContactsGrid"
         Command="!module/Commands[ScreenCommandShowEditableContactsGrid]" />
+      <ApplicationNavigationLink
+        Name="ListDetail"
+        Command="!module/Commands[ScreenCommandShowListDetail]" />
+      <ApplicationNavigationLink
+        Name="EditableCowsGrid"
+        Command="!module/Commands[ScreenCommandShowEditableCowsGrid]" />
     </ApplicationNavigationGroup>
     <ApplicationNavigationGroup
       Name="Administration">
